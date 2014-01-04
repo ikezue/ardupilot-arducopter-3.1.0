@@ -33,6 +33,7 @@
 
 // features below are disabled by default
 //#define SPRAYER               ENABLED             // enable the crop sprayer feature (two ESC controlled pumps the speed of which depends upon the vehicle's horizontal velocity)
+//#define LAND_SWITCH 			ENABLED
 
 // redefine size of throttle deadband in pwm (0 ~ 1000)
 //#define THROTTLE_IN_DEADBAND   100
