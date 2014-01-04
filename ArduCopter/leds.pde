@@ -82,6 +82,20 @@ static void update_copter_leds(void)
         }
     }
 
+    // if (LAND_SWITCH == ENABLED && land_switch_is_active()) {
+    //     copter_leds_GPS_fast_blink();
+    //     return;
+    // }
+
+    if (land_detection_by_land_switch) {
+        if (!motors.armed()) {
+            copter_leds_GPS_fast_blink();
+            return;
+        } else {
+            land_detection_by_land_switch = false;
+        }
+    }
+
     // GPS led control
     if (g.copter_leds_mode & COPTER_LEDS_BITMASK_GPS) {
 

@@ -1166,6 +1166,9 @@ get_throttle_rate_stabilized(int16_t target_rate)
     get_throttle_althold(controller_desired_alt, -g.pilot_velocity_z_max-250, g.pilot_velocity_z_max+250);   // 250 is added to give head room to alt hold controller
 }
 
+bool land_switch_activated = false;
+bool land_detection_by_land_switch = false;
+
 // get_throttle_land - high level landing logic
 // sends the desired acceleration in the accel based throttle controller
 // called at 50hz
@@ -1181,6 +1184,10 @@ get_throttle_land()
         // disarm when the landing detector says we've landed and throttle is at min (or we're in failsafe so we have no pilot thorottle input)
         if( ap.land_complete && (g.rc_3.control_in == 0 || failsafe.radio) ) {
             init_disarm_motors();
+            if (land_switch_activated) {
+                land_detection_by_land_switch = true;
+                land_switch_activated = false;
+            }
         }
     }
 }
@@ -1205,6 +1212,7 @@ static bool update_land_detector()
       if (abs(climb_rate) < 20 && land_switch_is_active()) {
         set_land_complete(true);
         land_detector = 0;
+        land_switch_activated = true;
         return ap.land_complete;
       }
     #endif
